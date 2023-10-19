@@ -1,0 +1,86 @@
+from PIL import Image
+import numpy as np
+
+
+def rysuj_ramke_szare(w, h, grub, kolor_ramki, kolor): #kolor od 0 do 255
+    t = (h, w)
+    tab = np.ones(t, dtype=np.uint8)
+    for j in range(int(min(w, h) / grub)):
+        if j % 2 == 0:
+            tab[j * grub:h - j * grub, j * grub:w - j * grub] = kolor_ramki
+        else:
+            tab[j * grub:h - j * grub, j * grub:w - j * grub] = kolor
+    return Image.fromarray(tab)
+
+
+im_ramka2 = rysuj_ramke_szare(120, 60, 6, 100, 200)
+im_ramka2.show()
+
+def rysuj_ramke_kolor(w, h, grub, kolor_ramki, kolor):  # kolor_ramki, kolor podajemy w postaci [r, g, b]
+    t = (h, w, 3)  # rozmiar tablicy
+    tab = np.ones(t, dtype=np.uint8)  # deklaracja tablicy
+    tab[:] = kolor_ramki
+    for j in range(int(min(w, h) / grub)):
+        if j % 3 == 0:
+            tab[j * grub:h - j * grub, j * grub:w - j * grub, 0] = kolor[0]
+        elif j % 3 == 1:
+            tab[j * grub:h - j * grub, j * grub:w - j * grub, 1] = kolor[1]
+        else:
+            tab[j * grub:h - j * grub, j * grub:w - j * grub, 2] = kolor[2]
+    return tab
+
+
+tab = rysuj_ramke_kolor(120, 60, 8, [0, 0, 255], [100, 200, 0])
+im_ramka = Image.fromarray(tab)
+im_ramka.show()
+
+def rysuj_pasy_pionowe_szare(w, h, grub, zmiana_koloru):
+    t = (h, w)
+    tab = np.ones(t, dtype=np.uint8)
+
+    ile = int(w / grub)
+    for k in range(ile):
+        for g in range(grub):
+            i = k * grub + g
+            for j in range(h):
+                tab[j, i] = (k + zmiana_koloru) % 256
+    return Image.fromarray(tab)
+
+
+obraz = rysuj_pasy_pionowe_szare(180, 100, 30, 20)
+obraz.show()
+
+
+def rysuj_pasy_poziome_kolor(w, h, grub, kolor, zmiana_koloru):  # funkcja rysuje pasy poziome, przy czym kazda składowa koloru zwieksza się o "zmiana_koloru"
+    t = (h, w, 3)
+    tab = np.ones(t, dtype=np.uint8)
+    tab[:] = kolor
+    ile = int(w / grub)
+    for k in range(ile):
+        r = (kolor[0] + k * zmiana_koloru)
+        g = (kolor[1] + k * zmiana_koloru)
+        b = (kolor[2] + k * zmiana_koloru)
+        for m in range(grub):
+            i = k * grub + m
+            for j in range(h):
+                tab[j, i] = [r, g, b]
+    return tab
+
+
+tab1 = rysuj_pasy_poziome_kolor(200, 100, 20, [100, 200, 0], 32)
+obraz1 = Image.fromarray(tab1)
+obraz1.show()
+
+def negatyw_szare(obraz):
+    tab = np.asarray(obraz)
+    h, w = tab.shape
+    tab_neg = tab.copy()
+    for i in range(h):
+        for j in range(w):
+            tab_neg[i, j] = 255 - tab[i, j]
+    return tab_neg
+
+
+tab_neg = negatyw_szare(tab1)
+obraz_neg = Image.fromarray(tab_neg)
+obraz_neg.show()

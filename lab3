@@ -43,7 +43,10 @@ def rysuj_pasy_pionowe_szare(w, h, grub, zmiana_koloru):
         for g in range(grub):
             i = k * grub + g
             for j in range(h):
-                tab[j, i] = (k + zmiana_koloru) % 256
+                if k % 2 == 1:
+                    tab[j, i] = (k + zmiana_koloru) % 256
+                else:
+                    tab[j, i] = 256
     return Image.fromarray(tab)
 
 
@@ -79,6 +82,12 @@ def negatyw_szare(obraz):
         for j in range(w):
             tab_neg[i, j] = 255 - tab[i, j]
     return tab_neg
+
+
+tab_neg = negatyw_szare(tab1)
+obraz_neg = Image.fromarray(tab_neg)
+obraz_neg.show()
+
 
 
 tab_neg = negatyw_szare(tab1)

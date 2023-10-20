@@ -138,8 +138,6 @@ def koloruj_obraz(obraz, kolor):
     return tab
 
 
-gwiazdka = Image.open("gwiazdka.bmp")
+gwiazdka = Image.open("inicjaly.bmp")
 obraz2 = Image.fromarray(koloruj_obraz(gwiazdka, [120, 240, 50]))
 obraz2.show()
-
-

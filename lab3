@@ -20,25 +20,6 @@ im_ramka2.save("obraz1_1.jpg")
 im_ramka2.save("obraz1_1.png")
 
 
-def rysuj_ramke_kolor(w, h, grub, kolor_ramki, kolor):  # kolor_ramki, kolor podajemy w postaci [r, g, b]
-    t = (h, w, 3)  # rozmiar tablicy
-    tab = np.ones(t, dtype=np.uint8)  # deklaracja tablicy
-    tab[:] = kolor
-    for j in range(int(min(w, h) / grub)):
-        if j % 2 == 0:
-            tab[j * grub:h - j * grub, j * grub:w - j * grub, 0] = kolor_ramki[0]
-        elif j % 3 == 1:
-            tab[j * grub:h - j * grub, j * grub:w - j * grub, 1] = kolor_ramki[1]
-        else:
-            tab[j * grub:h - j * grub, j * grub:w - j * grub, 2] = kolor_ramki[2]
-    return tab
-
-
-tab = rysuj_ramke_kolor(120, 120, 8, [0, 0, 255], [100, 200, 0])
-im_ramka = Image.fromarray(tab)
-im_ramka.show()
-
-
 def rysuj_pasy_pionowe_szare(w, h, grub, zmiana_koloru):
     t = (h, w)
     tab = np.ones(t, dtype=np.uint8)
@@ -70,9 +51,9 @@ def rysuj_ramki_kolorowe(w, zmiana_koloru_r, zmiana_koloru_g, zmiana_koloru_b):
         for i in range(k, z - k):
             for j in range(k, z - k):
                 tab[i, j] = [kolor_r, kolor_g, kolor_b]
-        kolor_r = kolor_r - zmiana_koloru_r
-        kolor_g = kolor_g - zmiana_koloru_g
-        kolor_b = kolor_b - zmiana_koloru_b
+        kolor_r = (kolor_r - zmiana_koloru_r) % 256
+        kolor_g = (kolor_g - zmiana_koloru_g) % 256
+        kolor_b = (kolor_b - zmiana_koloru_b) % 256
     return tab
 
 
@@ -91,13 +72,16 @@ def negatyw_szare(obraz):
     return tab_neg
 
 
-def negatyw_szare_kolory(obraz):
+def negatyw_kolor(obraz):
     tab = np.asarray(obraz)
-    h, w = tab.shape
+    h, w, c = tab.shape  # Get height, width, and number of color channels
     tab_neg = tab.copy()
+
     for i in range(h):
         for j in range(w):
-            tab_neg[i, j] = 255 - tab[i, j]
+            for k in range(c):  # Loop through color channels
+                tab_neg[i, j, k] = 255 - tab[i, j, k]
+
     return tab_neg
 
 
@@ -136,6 +120,10 @@ obraz1 = Image.fromarray(tab1)
 obraz1.show()
 
 
+obra = negatyw_kolor(tab)
+obra1 = Image.fromarray(obra)
+obra1.show()
+
 def koloruj_obraz(obraz, kolor):
     t_obraz = np.asarray(obraz)
     h, w = t_obraz.shape
@@ -153,4 +141,5 @@ def koloruj_obraz(obraz, kolor):
 gwiazdka = Image.open("gwiazdka.bmp")
 obraz2 = Image.fromarray(koloruj_obraz(gwiazdka, [120, 240, 50]))
 obraz2.show()
+
 

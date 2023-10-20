@@ -1,0 +1,60 @@
+D:\166261\LAB3\main.py:72: DeprecationWarning: NumPy will stop allowing conversion of out-of-bound Python integers to integer arrays.  The conversion of -46 to uint8 will fail in the future.
+For the old behavior, usually:
+    np.array(value).astype(dtype)
+will give the desired result (the cast overflows).
+  tab[i, j] = np.array((kolor_r, kolor_g, kolor_b), dtype=np.uint8)
+D:\166261\LAB3\main.py:72: DeprecationWarning: NumPy will stop allowing conversion of out-of-bound Python integers to integer arrays.  The conversion of -32 to uint8 will fail in the future.
+For the old behavior, usually:
+    np.array(value).astype(dtype)
+will give the desired result (the cast overflows).
+  tab[i, j] = np.array((kolor_r, kolor_g, kolor_b), dtype=np.uint8)
+D:\166261\LAB3\main.py:72: DeprecationWarning: NumPy will stop allowing conversion of out-of-bound Python integers to integer arrays.  The conversion of -52 to uint8 will fail in the future.
+For the old behavior, usually:
+    np.array(value).astype(dtype)
+will give the desired result (the cast overflows).
+  tab[i, j] = np.array((kolor_r, kolor_g, kolor_b), dtype=np.uint8)
+D:\166261\LAB3\main.py:72: DeprecationWarning: NumPy will stop allowing conversion of out-of-bound Python integers to integer arrays.  The conversion of -14 to uint8 will fail in the future.
+For the old behavior, usually:
+    np.array(value).astype(dtype)
+will give the desired result (the cast overflows).
+  tab[i, j] = np.array((kolor_r, kolor_g, kolor_b), dtype=np.uint8)
+D:\166261\LAB3\main.py:72: DeprecationWarning: NumPy will stop allowing conversion of out-of-bound Python integers to integer arrays.  The conversion of -36 to uint8 will fail in the future.
+For the old behavior, usually:
+    np.array(value).astype(dtype)
+will give the desired result (the cast overflows).
+  tab[i, j] = np.array((kolor_r, kolor_g, kolor_b), dtype=np.uint8)
+D:\166261\LAB3\main.py:72: DeprecationWarning: NumPy will stop allowing conversion of out-of-bound Python integers to integer arrays.  The conversion of -58 to uint8 will fail in the future.
+For the old behavior, usually:
+    np.array(value).astype(dtype)
+will give the desired result (the cast overflows).
+  tab[i, j] = np.array((kolor_r, kolor_g, kolor_b), dtype=np.uint8)
+D:\166261\LAB3\main.py:72: DeprecationWarning: NumPy will stop allowing conversion of out-of-bound Python integers to integer arrays.  The conversion of -64 to uint8 will fail in the future.
+For the old behavior, usually:
+    np.array(value).astype(dtype)
+will give the desired result (the cast overflows).
+  tab[i, j] = np.array((kolor_r, kolor_g, kolor_b), dtype=np.uint8)
+D:\166261\LAB3\main.py:72: DeprecationWarning: NumPy will stop allowing conversion of out-of-bound Python integers to integer arrays.  The conversion of -18 to uint8 will fail in the future.
+For the old behavior, usually:
+    np.array(value).astype(dtype)
+will give the desired result (the cast overflows).
+  tab[i, j] = np.array((kolor_r, kolor_g, kolor_b), dtype=np.uint8)
+D:\166261\LAB3\main.py:72: DeprecationWarning: NumPy will stop allowing conversion of out-of-bound Python integers to integer arrays.  The conversion of -44 to uint8 will fail in the future.
+For the old behavior, usually:
+    np.array(value).astype(dtype)
+will give the desired result (the cast overflows).
+  tab[i, j] = np.array((kolor_r, kolor_g, kolor_b), dtype=np.uint8)
+D:\166261\LAB3\main.py:72: DeprecationWarning: NumPy will stop allowing conversion of out-of-bound Python integers to integer arrays.  The conversion of -70 to uint8 will fail in the future.
+For the old behavior, usually:
+    np.array(value).astype(dtype)
+will give the desired result (the cast overflows).
+  tab[i, j] = np.array((kolor_r, kolor_g, kolor_b), dtype=np.uint8)
+Traceback (most recent call last):
+  File "D:\166261\LAB3\main.py", line 79, in <module>
+    tab = rysuj_ramki_kolorowe(200, 2, 4, 6)
+  File "D:\166261\LAB3\main.py", line 72, in rysuj_ramki_kolorowe
+    tab[i, j] = np.array((kolor_r, kolor_g, kolor_b), dtype=np.uint8)
+  File "D:\166261\LAB3\venv\lib\site-packages\numpy\core\_dtype.py", line 35, in __str__
+    if dtype.fields is not None:
+KeyboardInterrupt
+
+Process finished with exit code -1073741510 (0xC000013A: interrupted by Ctrl+C)

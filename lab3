@@ -126,15 +126,15 @@ obra1 = Image.fromarray(obra)
 obra1.show()
 
 
-def koloruj_obraz(obraz, grub):
+def koloruj_obraz(obraz, grubosc_paskow):
     t_obraz = np.asarray(obraz)
     h, w = t_obraz.shape
-    t =(h, w, 3)
+    t = (h, w, 3)
     tab = np.ones(t, dtype=np.uint8)
     for i in range(h):
         for j in range(w):
             if t_obraz[i, j] == False:
-                if i % 2 == 0:
+                if (i // grubosc_paskow) % 2 == 0:
                     tab[i, j] = [66, 5, 23]
                 else:
                     tab[i, j] = [66, 111, 88]

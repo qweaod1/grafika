@@ -1,0 +1,193 @@
+from PIL import Image
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Load the original image
+im = Image.open('obraz.jpg')
+im_copy = im.copy()
+
+# Load the black and white image with initials
+inicjaly = Image.open('inicjaly.bmp')
+inicjaly_copy = inicjaly.copy()
+
+
+# Task 2.1 Using getpixel and putpixel:
+def wstaw_inicjaly(obraz, inicjaly, kolor):
+    obraz1 = obraz.copy()
+    m = obraz.width - inicjaly.width
+    n = obraz.height - inicjaly.height
+    for i in range(inicjaly.height):
+        for j in range(inicjaly.width):
+            pixel = inicjaly.getpixel((j, i))
+            if pixel != 255:
+                obraz1.putpixel((j + m, i + n), kolor)
+    return obraz1
+
+# Create and save obraz1
+obraz1 = wstaw_inicjaly(im_copy, inicjaly_copy, (255, 0, 0))
+obraz1.save('obraz1.jpg')
+obraz1.show()
+
+# Task 2.2 Using a mask:
+def wstaw_inicjaly_maska(obraz, inicjaly, x, y, z):
+    m = obraz.width - inicjaly.width
+    n = obraz.height - inicjaly.height
+    obraz2 = obraz.copy()
+    for i in range(inicjaly.width):
+        for j in range(inicjaly.height):
+            pixel = inicjaly.getpixel((i, j))
+            if pixel == (0, 0, 0):
+                current_pixel = obraz2.getpixel((i + m, j + n))
+                obraz2.putpixel((i + m, j + n), (current_pixel[0] + x, current_pixel[1] + y, current_pixel[2] + z))
+    return obraz2
+
+# Create and save obraz2
+obraz2 = wstaw_inicjaly_maska(im_copy, inicjaly_copy, 50, -50, 20)
+obraz2.save('obraz2.jpg')
+
+# Task 3.1 Using load:
+def wstaw_inicjaly_load(obraz, inicjaly, kolor):
+    m = obraz.width - inicjaly.width
+    n = obraz.height - inicjaly.height
+    obraz1 = obraz.copy()
+    pix = obraz1.load()
+    for i in range(inicjaly.width):
+        for j in range(inicjaly.height):
+            pixel = inicjaly.getpixel((i, j))
+            if pixel == (0, 0, 0):
+                pix[i + m, j + n] = kolor
+    return obraz1
+
+# Test the function without saving the image
+wstaw_inicjaly_load(im_copy, inicjaly_copy, (255, 0, 0))
+
+# Task 3.2 Using load for mask:
+def wstaw_inicjaly_maska_load(obraz, inicjaly, x, y, z):
+    m = obraz.width - inicjaly.width
+    n = obraz.height - inicjaly.height
+    obraz2 = obraz.copy()
+    pix = obraz2.load()
+    for i in range(inicjaly.width):
+        for j in range(inicjaly.height):
+            pixel = inicjaly.getpixel((i, j))
+            if pixel == (0, 0, 0):
+                current_pixel = pix[i + m, j + n]
+                pix[i + m, j + n] = (current_pixel[0] + x, current_pixel[1] + y, current_pixel[2] + z)
+    return obraz2
+
+# Test the function without saving the image
+wstaw_inicjaly_maska_load(im_copy, inicjaly_copy, 50, -50, 20)
+
+# Task 4.1 Contrast function:
+def kontrast(obraz, wsp_kontrastu):
+    obraz_kontrast = obraz.point(lambda i: 128 + (i - 128) * ((255 + wsp_kontrastu) / 255) ** 2)
+    return obraz_kontrast
+
+# Test the function with different wsp_kontrastu values
+obraz_kontrast1 = kontrast(im_copy, 20)
+obraz_kontrast2 = kontrast(im_copy, 50)
+obraz_kontrast3 = kontrast(im_copy, 80)
+
+# Task 4.2 Logarithmic transformation and linear filter:
+def transformacja_logarytmiczna(obraz):
+    return obraz.point(lambda i: int(255 * np.log(1 + i / 255)))
+
+# Create and save the images
+obraz_logarytmiczna = transformacja_logarytmiczna(im_copy)
+obraz_filtrowany = obraz_logarytmiczna.point(lambda i: i * 2 + 100)
+obraz_logarytmiczna.save('obraz_logarytmiczna.jpg')
+obraz_filtrowany.save('obraz_filtrowany.jpg')
+
+# Task 4.3 Gamma transformation:
+def transformacja_gamma(obraz, gamma):
+    return obraz.point(lambda i: int((i / 255) ** (1 / gamma) * 255))
+
+# Test the function with different gamma values
+obraz_gamma1 = transformacja_gamma(im_copy, 0.5)
+obraz_gamma2 = transformacja_gamma(im_copy, 1.5)
+obraz_gamma3 = transformacja_gamma(im_copy, 2.5)
+
+# Display the images on plt
+fig, axes = plt.subplots(1, 4, figsize=(15, 5))
+axes[0].imshow(np.array(im_copy))
+axes[0].set_title('Original Image')
+axes[1].imshow(np.array(obraz_kontrast1))
+axes[1].set_title('Contrast 20')
+axes[2].imshow(np.array(obraz_kontrast2))
+axes[2].set_title('Contrast 50')
+axes[3].imshow(np.array(obraz_kontrast3))
+axes[3].set_title('Contrast 80')
+plt.savefig('fig1.png')
+
+# Display the images on plt
+fig, axes = plt.subplots(1, 3, figsize=(15, 5))
+axes[0].imshow(np.array(im_copy))
+axes[0].set_title('Original Image')
+axes[1].imshow(np.array(obraz_logarytmiczna))
+axes[1].set_title('Logarithmic Transformation')
+axes[2].imshow(np.array(obraz_filtrowany))
+axes[2].set_title('Linear Filter (a=2, b=100)')
+plt.savefig('fig2.png')
+
+# Task 4.3 continued (Gamma transformation):
+# Test the function with different gamma values
+obraz_gamma1 = transformacja_gamma(im_copy, 0.5)
+obraz_gamma2 = transformacja_gamma(im_copy, 1.5)
+obraz_gamma3 = transformacja_gamma(im_copy, 2.5)
+
+# Display the images on plt
+fig, axes = plt.subplots(1, 4, figsize=(15, 5))
+axes[0].imshow(np.array(im_copy))
+axes[0].set_title('Original Image')
+axes[1].imshow(np.array(obraz_gamma1))
+axes[1].set_title('Gamma 0.5')
+axes[2].imshow(np.array(obraz_gamma2))
+axes[2].set_title('Gamma 1.5')
+axes[3].imshow(np.array(obraz_gamma3))
+axes[3].set_title('Gamma 2.5')
+plt.savefig('fig3.png')
+
+# Task 5:
+obraz = im.copy()
+T = np.array(obraz, dtype='uint8')
+T += 100
+obraz_wynik = Image.fromarray(T, "RGB")
+obraz_wynik.show()
+
+# Task 6:
+def zastosuj_funkcje(image, func):
+    w, h = image.size
+    pixele = image.load()
+    for i in range(w):
+        for j in range(h):
+            pixele[i, j] = func(pixele[i, j])
+
+def przestaw_kolory(pixel):
+    return (pixel[1], pixel[2], pixel[0])
+
+im6 = im.copy()
+zastosuj_funkcje(im6, przestaw_kolory)
+im6.show()
+
+def filtr_liniowy(image, a, b):
+    w, h = image.size
+    pixele = image.load()
+    for i in range(w):
+        for j in range(h):
+            pixele[i, j] = (pixele[i, j][0] * a + b, pixele[i, j][1] * a + b, pixele[i, j][2] * a + b)
+
+im7 = im.copy()
+filtr_liniowy(im7, 2, -50)
+im7.show()
+
+im8 = im.copy()
+im8 = im8.point(lambda i: i + 100)
+im8.show()
+
+def efekt_plakatu(im, wsp):
+    return im.point(lambda i: i > wsp and 255)
+
+im9 = im.copy()
+efekt_plakatu(im9, 100)
+
+plt.show()

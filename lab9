@@ -3,44 +3,46 @@ import numpy as np
 import matplotlib.pyplot as plt
 from PIL import ImageStat as stat
 
-# 1. Load and convert image to 'L' mode
+# 1. Pobranie obrazu zeby i konwersja na tryb L
 obraz = Image.open('zeby.png')
 obraz_l = obraz.convert('L')
 
-# 2. Histogram functions
+# 2.1 Funkcja histogramu znormalizowanego
 def histogram_norm(image):
     hist = image.histogram()
     norm_hist = [float(h) / sum(hist) for h in hist]
     return norm_hist
 
+# 2.2 Funkcja histogramu skumulowanego
 def histogram_cumul(image):
     hist = image.histogram()
     cumul_hist = [sum(hist[:i+1]) for i in range(len(hist))]
     return cumul_hist
 
+# 2.3 Wyrównanie histogramu
 def histogram_equalization(image):
     equalized_image = ImageOps.equalize(image, mask=None)
     return equalized_image
 
 def statystyki(im):
     s = stat.Stat(im)
-    print("extrema ", s.extrema)  # max and min
-    print("count ", s.count)  # count
-    print("mean ", s.mean)  # mean
-    print("median ", s.median)  # median
-    print("stddev ", s.stddev)  # standard deviation
+    print("extrema ", s.extrema)
+    print("count ", s.count)
+    print("mean ", s.mean)
+    print("median ", s.median)
+    print("stddev ", s.stddev)
 
-# 2.1 Histogram normalized
+# 2.1 Histogram znormalizowany
 hist_norm_obraz = histogram_norm(obraz_l)
 
-# 2.2 Histogram cumulative
+# 2.2 Histogram skumulowany
 hist_cumul_obraz = histogram_cumul(obraz_l)
 
-# 2.3 Histogram equalization
+# 2.3 Histogram wyrównanie
 obraz_equalized = histogram_equalization(obraz_l)
 obraz_equalized.save('equalized.png')
 
-# 2.4 Plot histograms
+# 2.4 Rysowanie histogramu
 plt.figure(figsize=(12, 6))
 plt.subplot(2, 3, 1)
 plt.title("Original Image")
@@ -70,15 +72,14 @@ plt.tight_layout()
 plt.savefig('fig1.png')
 plt.show()
 
-# 2.5 Comment on differences between the original and equalized images based on statistics
 statystyki(obraz_l)
 statystyki(obraz_equalized)
 
-# 3. ImageOps.equalize method
+# 3. Metoda ImageOps
 obraz_equalized1 = ImageOps.equalize(obraz, mask=None)
 obraz_equalized1.save('equalized1.png')
 
-# 3.1 Plot images from points 2 and 3
+# 3.1 Rysowanie obrazu wyjściowego i wejściowego
 plt.figure(figsize=(12, 6))
 plt.subplot(1, 3, 1)
 plt.title("Original Image")
@@ -96,10 +97,8 @@ plt.tight_layout()
 plt.savefig('fig2.png')
 plt.show()
 
-# 3.2 Comment on differences between images from points 2 and 3
-# The differences may arise from variations in the internal algorithms used by the functions.
 
-# 4. Custom conversion function
+# 4. Funkcja konwertująca obrazu w trybie RGB na L
 def konwertuj1(obraz, w_r, w_g, w_b):
     r, g, b = obraz.split()
     l = Image.merge('RGB', (
@@ -109,16 +108,15 @@ def konwertuj1(obraz, w_r, w_g, w_b):
     ))
     return l.convert('L')
 
-# 4.1 Apply the custom conversion function
+# 4.1 Użycie funkcji konwertuj1
 mgla_obraz = Image.open('mgla.jpg')
 mgla_L1 = konwertuj1(mgla_obraz, 299/1000, 587/1000, 114/1000)
 mgla_L1.save('mgla_L1.png')
 
-# 4.2 Evaluate differences between images
 statystyki(mgla_L1)
 statystyki(mgla_obraz.convert('L'))
 
-# 4.3 Apply the custom conversion function with int() instead of round()
+# 4.3 Funkcja konwertująca obrazu w trybie RGB na L z użyciem int() zamiast round()
 def konwertuj2(obraz, w_r, w_g, w_b):
     r, g, b = obraz.split()
     l = Image.merge('RGB', (
@@ -131,5 +129,4 @@ def konwertuj2(obraz, w_r, w_g, w_b):
 mgla_L2 = konwertuj2(mgla_obraz, 299/1000, 587/1000, 114/1000)
 mgla_L2.save('mgla_L2.png')
 
-# 4.2 Evaluate differences between images with int() instead of round()
 statystyki(mgla_L2)
